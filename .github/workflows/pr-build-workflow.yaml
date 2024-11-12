@@ -27,7 +27,7 @@ jobs:
         env:
           OPENSHIFT_NAMESPACE: 'domigmail-dev'
         with:
-          openshift_server_url: https://main-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+          openshift_server_url: https://api.sandbox-m2.ll9k.p1.openshiftapps.com:6443
 #          openshift_username: ${{ secrets.OPENSHIFT_USER }}
 #          openshift_password: ${{ secrets.OPENSHIFT_PASSWORD }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
