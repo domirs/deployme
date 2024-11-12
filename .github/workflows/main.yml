@@ -33,7 +33,7 @@ jobs:
         run: npm run build
 
       - name: docker build
-        run: docker build . --file Dockerfile --tag deployme:main
+        run: docker build . --file Dockerfile --tag ghcr.io/domirs/deployme:main
 
       - name: Push to registry
         run: docker push ghcr.io/domirs/deployme:main
