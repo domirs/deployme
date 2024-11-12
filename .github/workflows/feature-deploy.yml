@@ -9,8 +9,8 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  REGISTRY: default-route-openshift-image-registry.apps.sandbox-m2.ll9k.p1.openshiftapps.com/domigmail-dev
+  IMAGE_NAME: deployme
 
 jobs:
   set-vars:
