@@ -9,9 +9,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-  IMAGE_REGISTRY_USER: ${{ github.actor }}
-  IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build:
@@ -49,4 +48,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: deployme:main
+          tags: ${{ env.IMAGE_NAME }}:main
