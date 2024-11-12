@@ -50,13 +50,15 @@ jobs:
           push: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
 
-  # deployment:
-  #   steps:
-  #     - name: "Login into openshift"
-  #       uses: ./.github/actions/oc-login
-  #       with:
-  #         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
-  #         openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+  deployment:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Login into openshift"
+        uses: ./.github/actions/oc-login
+        with:
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
-  #     - name: "list projects"
-  #       run: oc projects
+      - name: "list projects"
+        run: oc projects
