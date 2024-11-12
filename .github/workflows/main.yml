@@ -68,3 +68,6 @@ jobs:
 
       - name: list projects
         run: oc projects
+
+      - name: deploy pr
+        run: helm upgrade --install main ./

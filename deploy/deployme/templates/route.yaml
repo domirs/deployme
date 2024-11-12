@@ -1,0 +1,21 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ include "deployme.fullname" . }}-route
+  labels:
+    {{- include "deployme.labels" . | nindent 4 }}
+{{/*    router: {{ .Values.serviceVlb.labels.routeType }}*/}}
+
+spec:
+  port:
+    targetPort: service-port
+  to:
+    kind: Service
+    name: {{ include "deployme.fullname" . }}
+  path: '/'
+{{/*  {{- if or .Values.serviceVlb.data.host .Values.commons.data.defaultEsgHost }}*/}}
+{{/*  host: "{{  required "A valid .Values.serviceVlb.data.subdomain entry required!" .Values.serviceVlb.data.subdomain }}.{{ .Values.serviceVlb.data.host  | default .Values.commons.data.defaultEsgHost }}"*/}}
+{{/*  {{- end }}*/}}
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
