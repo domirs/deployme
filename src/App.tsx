@@ -1,12 +1,9 @@
 import { T, useTranslate } from "@tolgee/react"; // Importing translation functions from Tolgee
 import { useEffect, useState } from "react";
-
-import "./App.css";
-
 import { BiSearch } from "react-icons/bi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaDroplet, FaWind } from "react-icons/fa6";
-
+import "./App.css";
 import LanguageSelect from "./components/LanguageSelect";
 import RippleLoader from "./components/Loader";
 
