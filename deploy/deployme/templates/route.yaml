@@ -1,7 +1,7 @@
 apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
-  name: {{ include "deployme.fullname" . }}-route
+  name: {{ include "deployme.fullname" . }}
   labels:
     {{- include "deployme.labels" . | nindent 4 }}
 {{/*    router: {{ .Values.serviceVlb.labels.routeType }}*/}}
