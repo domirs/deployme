@@ -39,7 +39,7 @@ jobs:
         id: push-image
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: deployme
+          image: docker.io/library/deployme
           tags: main
           registry: ${{ env.IMAGE_REGISTRY }}
           username: ${{ env.IMAGE_REGISTRY_USER }}
