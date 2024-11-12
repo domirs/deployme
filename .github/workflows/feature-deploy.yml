@@ -23,8 +23,6 @@ jobs:
   build:
     needs: [set-vars]
     runs-on: ubuntu-latest
-    env:
-      ENV_NAME: ${{ needs.set-vars.outputs.ENV_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -45,7 +43,7 @@ jobs:
         run: docker build . --file Dockerfile --tag deployme:${{ needs.set-vars.outputs.ENV_NAME }}
 
   deployment:
-    needs: [set-vars]
+    needs: [set-vars, build]
     environment:
       name: ${{ needs.set-vars.outputs.ENV_NAME }}
       url: https://${{ needs.set-vars.outputs.ENV_NAME }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
