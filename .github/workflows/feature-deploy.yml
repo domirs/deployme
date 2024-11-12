@@ -9,7 +9,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  ENV_NAME: ${{ github.ref }}
+  ENV_NAME: test
 
 jobs:
   build:
