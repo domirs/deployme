@@ -1,0 +1,31 @@
+name: main build & deploy
+
+on:
+  push:
+    branches: ["main"]
+
+concurrency:
+  group: "main"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    environment:
+      name: main
+      url: https://main-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: npm install
+        run: npm ci
+
+      - name: npm build
+        run: npm run build
