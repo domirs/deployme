@@ -8,6 +8,11 @@ concurrency:
   group: "main"
   cancel-in-progress: true
 
+env:
+  IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+  IMAGE_REGISTRY_USER: ${{ github.actor }}
+  IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,3 +34,13 @@ jobs:
 
       - name: docker build
         run: docker build . --file Dockerfile --tag deployme:main
+
+      - name: Push to registry
+        id: push-image
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: deployme
+          tags: main
+          registry: ${{ env.IMAGE_REGISTRY }}
+          username: ${{ env.IMAGE_REGISTRY_USER }}
+          password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
