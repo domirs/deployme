@@ -79,3 +79,4 @@ jobs:
       - name: deploy pr
         working-directory: deploy/deployme
         run: helm upgrade --install --set-string image.tag=${{ needs.set-vars.outputs.ENV_NAME }} ${{ needs.set-vars.outputs.ENV_NAME }} ./
+#test
