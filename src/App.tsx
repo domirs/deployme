@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
 import { T, useTranslate } from "@tolgee/react"; // Importing translation functions from Tolgee
+import { useEffect, useState } from "react";
 
 import "./App.css";
 
+import { BiSearch } from "react-icons/bi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaDroplet, FaWind } from "react-icons/fa6";
-import { BiSearch } from "react-icons/bi";
 
 import LanguageSelect from "./components/LanguageSelect";
 import RippleLoader from "./components/Loader";
@@ -43,7 +43,7 @@ function App() {
   // State variables to store city name, weather data, forecast data, loading state, and errors
   const [city, setCity] = useState<string>(""); // City input value
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null); // Current weather data
-  const [forecastData, setForecastData] = useState<ForecastData | null>(null); // Forecast data
+  const [, setForecastData] = useState<ForecastData | null>(null); // Forecast data
   const [loading, setLoading] = useState<boolean>(false); // Loading state
   const [error, setError] = useState<string | null>(null); // Error message
 
