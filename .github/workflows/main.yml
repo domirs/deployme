@@ -41,7 +41,7 @@ jobs:
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ secrets.OPENSHIFT_USER }}
-          password: ${{ secrets.OPENSHIFT_PASSWORD }}
+          password: ${{ secrets.OPENSHIFT_TOKEN }}
 
       - name: Build and push
         uses: docker/build-push-action@v6
