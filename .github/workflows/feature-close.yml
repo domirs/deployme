@@ -5,8 +5,8 @@ on:
     types: [closed]
 
 concurrency:
-  group: "feature-close"
-  cancel-in-progress: false
+  group: "feature-deploy"
+  cancel-in-progress: true
 
 jobs:
   set-vars:
