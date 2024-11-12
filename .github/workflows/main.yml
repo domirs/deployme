@@ -36,11 +36,4 @@ jobs:
         run: docker build . --file Dockerfile --tag deployme:main
 
       - name: Push to registry
-        id: push-image
-        uses: redhat-actions/push-to-registry@v2
-        with:
-          image: docker.io/library/deployme
-          tags: main
-          registry: ${{ env.IMAGE_REGISTRY }}
-          username: ${{ env.IMAGE_REGISTRY_USER }}
-          password: ${{ env.IMAGE_REGISTRY_PASSWORD }}
+        run: docker push ghcr.io/domirs/deployme:main
