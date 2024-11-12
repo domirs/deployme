@@ -21,4 +21,4 @@ jobs:
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
       - name: 'list projects'
-        run: oc project
+        run: oc projects
