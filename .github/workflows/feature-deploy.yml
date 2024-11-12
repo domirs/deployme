@@ -63,6 +63,9 @@ jobs:
   deployment:
     needs: [set-vars, build]
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.set-vars.outputs.ENV_NAME }}
+      url: https://${{ needs.set-vars.outputs.ENV_NAME }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4
