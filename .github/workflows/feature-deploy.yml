@@ -9,10 +9,17 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  set-vars:
+    runs-on: ubuntu-latest
+    outputs:
+      ENV_NAME: ${{ steps.genEnvName.outputs.ENV_NAME }}
+    steps:
+      - id: genEnvName
+        name: set env
+        run: echo "ENV_NAME=${GITHUB_REF#refs/branch/}" | tr / - >> $GITHUB_OUTPUT
+
   build:
-    environment:
-      name: ${{ github.ref/\//- }}
-      url: https://${{ github.ref/\//- }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+    needs: [set-vars]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,3 +36,18 @@ jobs:
 
       - name: npm build
         run: npm run build
+
+      # - name: docker build
+      #   run: docker build . --file Dockerfile --tag deployme:${{ needs.set-vars.outputs.ENV_NAME }}
+
+  deployment:
+    needs: [set-vars, build]
+    environment:
+      name: ${{ needs.set-vars.outputs.ENV_NAME }}
+      url: https://${{ needs.set-vars.outputs.ENV_NAME }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+    runs-on: ubuntu-latest
+    steps:
+      - name: echo
+        run: echo "deployment"
+      # - name: Login into openshift
+      #   uses: ./.github/actions/oc-login

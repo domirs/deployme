@@ -8,11 +8,14 @@ concurrency:
   group: "feature-close"
   cancel-in-progress: false
 
+env:
+  ENV_NAME: ${{ github.ref/\//- }}
+
 jobs:
   build:
     environment:
-      name: ${{ github.ref/\//- }}
-      url: https://${{ github.ref/\//- }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+      name: ${{ env.ENV_NAME }}
+      url: https://${{ env.ENV_NAME }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
