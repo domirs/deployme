@@ -9,9 +9,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  #IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
-  #IMAGE_REGISTRY_USER: ${{ github.actor }}
-  #IMAGE_REGISTRY_PASSWORD: ${{ github.token }}
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
 
@@ -67,3 +64,4 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+
