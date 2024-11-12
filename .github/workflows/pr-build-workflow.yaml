@@ -28,8 +28,9 @@ jobs:
           OPENSHIFT_NAMESPACE: 'domigmail-dev'
         with:
           openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
-          openshift_username: ${{ secrets.OPENSHIFT_USER }}
-          openshift_password: ${{ secrets.OPENSHIFT_PASSWORD }}
+#          openshift_username: ${{ secrets.OPENSHIFT_USER }}
+#          openshift_password: ${{ secrets.OPENSHIFT_PASSWORD }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
           insecure_skip_tls_verify: true
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
 
