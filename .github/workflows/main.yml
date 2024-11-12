@@ -53,6 +53,9 @@ jobs:
   deployment:
     needs: [build]
     runs-on: ubuntu-latest
+    environment:
+      name: main
+      url: https://main-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4
