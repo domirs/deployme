@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: main
-      url: https://main-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+      url: https://main-deployme-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -65,9 +65,6 @@ jobs:
         with:
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
-
-      - name: list projects
-        run: oc projects
 
       - name: deploy pr
         working-directory: deploy/deployme

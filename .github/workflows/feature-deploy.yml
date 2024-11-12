@@ -65,7 +65,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ${{ needs.set-vars.outputs.ENV_NAME }}
-      url: https://${{ needs.set-vars.outputs.ENV_NAME }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+      url: https://${{ needs.set-vars.outputs.ENV_NAME }}-deployme-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -76,5 +76,6 @@ jobs:
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
-      - name: list projects
-        run: oc projects
+      - name: deploy pr
+        working-directory: deploy/deployme
+        run: helm upgrade --install main ./
