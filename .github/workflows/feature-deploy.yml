@@ -39,8 +39,8 @@ jobs:
       - name: npm build
         run: npm run build
 
-      - name: docker build
-        run: docker build . --file Dockerfile --tag deployme:${{ needs.set-vars.outputs.ENV_NAME }}
+      # - name: docker build
+      #   run: docker build . --file Dockerfile --tag deployme:${{ needs.set-vars.outputs.ENV_NAME }}
 
   deployment:
     needs: [set-vars, build]
@@ -49,5 +49,7 @@ jobs:
       url: https://${{ needs.set-vars.outputs.ENV_NAME }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
     runs-on: ubuntu-latest
     steps:
-      - name: Login into openshift
-        uses: ./.github/actions/oc-login
+      - name: echo
+        run: echo "deployment"
+      # - name: Login into openshift
+      #   uses: ./.github/actions/oc-login
