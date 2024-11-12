@@ -1,4 +1,4 @@
-name: feature build & deploy
+name: feature closed
 
 on:
   pull_request:
@@ -8,15 +8,32 @@ concurrency:
   group: "feature-close"
   cancel-in-progress: false
 
-env:
-  ENV_NAME: ${{ github.ref/\//- }}
-
 jobs:
-  build:
-    environment:
-      name: ${{ env.ENV_NAME }}
-      url: https://${{ env.ENV_NAME }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+  set-vars:
     runs-on: ubuntu-latest
+    outputs:
+      ENV_NAME: ${{ steps.genEnvName.outputs.ENV_NAME }}
+    steps:
+      - id: genEnvName
+        name: set env
+        run: echo "ENV_NAME=${GITHUB_REF#refs/branch/}" | tr / - >> $GITHUB_OUTPUT
+
+  cleanup:
+    needs: [set-vars]
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ needs.set-vars.outputs.ENV_NAME }}
+      url: https://${{ needs.set-vars.outputs.ENV_NAME }}-deployme-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Login into openshift
+        uses: ./.github/actions/oc-login
+        with:
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+
+      - name: deploy pr
+        working-directory: deploy/deployme
+        run: helm uninstall ${{ needs.set-vars.outputs.ENV_NAME }} ./
