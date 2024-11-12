@@ -12,35 +12,38 @@ jobs:
   prepare:
     runs-on: ubuntu-latest
     steps:
-      - name: set env
-        run: echo "ENV_NAME=test" >> $GITHUB_ENV
+      - id: prepare
+        name: set env
+        run: echo "ENV_NAME=test" >> $GITHUB_OUTPUT
+      - name: echo
+        run echo "${{ steps.prepare.outputs.ENV_NAME }}"
 
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: "npm"
+  #     - name: Set up Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: ${{ env.NODE_VERSION }}
+  #         cache: "npm"
 
-      - name: npm install
-        run: npm ci
+  #     - name: npm install
+  #       run: npm ci
 
-      - name: npm build
-        run: npm run build
+  #     - name: npm build
+  #       run: npm run build
 
-      - name: docker build
-        run: docker build . --file Dockerfile --tag deployme:${{ env.ENV_NAME }}
+  #     - name: docker build
+  #       run: docker build . --file Dockerfile --tag deployme:${{ env.ENV_NAME }}
 
-  deployment:
-    environment:
-      name: ${{ env.ENV_NAME }}
-      url: https://${{ env.ENV_NAME }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
-    runs-on: ubuntu-latest
-    steps:
-      - name: Login into openshift
-        uses: ./.github/actions/oc-login
+  # deployment:
+  #   environment:
+  #     name: ${{ env.ENV_NAME }}
+  #     url: https://${{ env.ENV_NAME }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Login into openshift
+  #       uses: ./.github/actions/oc-login
