@@ -3,12 +3,18 @@ description: OpenShift CLI Login on OpenShift
 runs:
   using: "composite"
   steps:
-    - name: Authenticate and set context
+    - name: 'Install oc'
+      uses: redhat-actions/openshift-tools-installer@v1
+      with:
+        oc: 4
+
+    - name: 'Authenticate and set context'
       uses: redhat-actions/oc-login@v1
       env:
         OPENSHIFT_NAMESPACE: 'domigmail-dev'
       with:
-        openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+        openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
         openshift_username: ${{ secrets.OPENSHIFT_USER }}
         openshift_password: ${{ secrets.OPENSHIFT_PASSWORD }}
+        insecure_skip_tls_verify: true
         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
