@@ -51,7 +51,7 @@ function App() {
 
   // Function to fetch weather and forecast data from OpenWeather API
   const fetchWeatherData = async (cityName: string) => {
-    const apiKey = process.env.WEATHER_API_KEY; // Fetching the API key from environment variables
+    const apiKey = "6aa1b1b98ae89bb4e3b5dfdbfd2ca861"; // Fetching the API key from environment variables
     const currentWeatherUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`; // API URL for current weather
     const forecastUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=metric`; // API URL for 3-day forecast
 
@@ -101,7 +101,7 @@ function App() {
         navigator.geolocation.getCurrentPosition(
           async (position) => {
             const { latitude, longitude } = position.coords; // Getting user's device location
-            const apiKey = process.env.WEATHER_API_KEY;
+            const apiKey = "6aa1b1b98ae89bb4e3b5dfdbfd2ca861";
             const reverseGeocodeUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`; // API URL for reverse geocoding (get location by lat/lon
 
             try {
