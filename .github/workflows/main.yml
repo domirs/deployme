@@ -58,13 +58,13 @@ jobs:
           tags: test
           labels: ${{ steps.meta.outputs.labels }}
 
-  deployment:
-    steps:
-      - name: "Login into openshift"
-        uses: ./.github/actions/oc-login
-        with:
-          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
-          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+  # deployment:
+  #   steps:
+  #     - name: "Login into openshift"
+  #       uses: ./.github/actions/oc-login
+  #       with:
+  #         namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+  #         openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
-      - name: "list projects"
-        run: oc projects
+  #     - name: "list projects"
+  #       run: oc projects
