@@ -1,0 +1,14 @@
+name: OC-Login
+description: OpenShift CLI Login on OpenShift
+runs:
+  using: "composite"
+  steps:
+    - name: Authenticate and set context
+      uses: redhat-actions/oc-login@v1
+      env:
+        OPENSHIFT_NAMESPACE: 'domigmail-dev'
+      with:
+        openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+        openshift_username: ${{ secrets.OPENSHIFT_USER }}
+        openshift_password: ${{ secrets.OPENSHIFT_PASSWORD }}
+        namespace: ${{ env.OPENSHIFT_NAMESPACE }}
