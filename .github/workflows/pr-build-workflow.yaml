@@ -20,20 +20,5 @@ jobs:
           namespace: ${{ env.OPENSHIFT_NAMESPACE }}
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
-#      - name: 'Install oc'
-#        uses: redhat-actions/openshift-tools-installer@v1
-#        with:
-#          oc: 4
-#
-#      - name: 'Authenticate and set context'
-#        uses: redhat-actions/oc-login@v1
-#        env:
-#          OPENSHIFT_NAMESPACE: 'domigmail-dev'
-#        with:
-#          openshift_server_url: https://api.sandbox-m2.ll9k.p1.openshiftapps.com:6443
-#          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
-#          insecure_skip_tls_verify: true
-#          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
-
       - name: 'list projects'
         run: oc project
