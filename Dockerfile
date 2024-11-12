@@ -1,8 +1,9 @@
-FROM registry.access.redhat.com/ubi8/nginx-126
+FROM nginx-unprivileged:1.27-alpine
 
-# Add application sources
-ADD nginx.conf "${NGINX_CONF_PATH}"
-ADD dist/* .
+COPY ngnix.conf /etc/nginx/conf.d/default.conf
 
-# Run script uses standard ways to run the application
-CMD nginx -g "daemon off;"
+COPY dist /usr/share/nginx/html
+
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
