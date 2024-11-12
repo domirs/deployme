@@ -1,5 +1,14 @@
 name: OC-Login
 description: OpenShift CLI Login on OpenShift
+
+inputs:
+  openshift_token:
+    description: 'Openshift Token'
+    required: true
+  namespace:
+    description: 'Openshift Namespace'
+    required: true
+
 runs:
   using: "composite"
   steps:
@@ -13,8 +22,7 @@ runs:
       env:
         OPENSHIFT_NAMESPACE: 'domigmail-dev'
       with:
-        openshift_server_url: ${{ env.OPENSHIFT_SERVER }}
-        openshift_username: ${{ secrets.OPENSHIFT_USER }}
-        openshift_password: ${{ secrets.OPENSHIFT_PASSWORD }}
+        openshift_server_url: https://api.sandbox-m2.ll9k.p1.openshiftapps.com:6443
+        openshift_token: ${{ inputs.openshift_token }}
         insecure_skip_tls_verify: true
-        namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+        namespace: ${{ inputs.namespace }}
