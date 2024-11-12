@@ -36,4 +36,4 @@ jobs:
 
       - name: deploy pr
         working-directory: deploy/deployme
-        run: helm uninstall ${{ needs.set-vars.outputs.ENV_NAME }} ./
+        run: helm uninstall ${{ needs.set-vars.outputs.ENV_NAME }}
