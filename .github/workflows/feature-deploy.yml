@@ -14,9 +14,9 @@ jobs:
     steps:
       - id: prepare
         name: set env
-        run: echo "ENV_NAME=test" >> $GITHUB_OUTPUT
+        run: echo "ENV_NAME=${{ github.ref_name }}" >> $GITHUB_OUTPUT
       - name: echo
-        run: echo "${{ steps.prepare.outputs.ENV_NAME }}"
+        run: echo ${{ steps.prepare.outputs.ENV_NAME }}
 
   # build:
   #   runs-on: ubuntu-latest
