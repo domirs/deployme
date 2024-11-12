@@ -29,3 +29,6 @@ jobs:
 
       - name: npm build
         run: npm run build
+
+      - name: docker build
+        run: docker build . --file Dockerfile --tag deployme:main
