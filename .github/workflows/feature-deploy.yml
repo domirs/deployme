@@ -31,7 +31,7 @@ jobs:
         run: npm run build
 
       - name: docker build
-        run: docker build . --file Dockerfile --tag deployme:https://${{ env.ENV_NAME }}
+        run: docker build . --file Dockerfile --tag deployme:${{ env.ENV_NAME }}
 
   deployment:
     environment:
