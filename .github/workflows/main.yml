@@ -70,4 +70,5 @@ jobs:
         run: oc projects
 
       - name: deploy pr
+        working-directory: deploy/deployme
         run: helm upgrade --install main ./
