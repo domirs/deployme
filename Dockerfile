@@ -1,5 +1,5 @@
-FROM node:19-alpine as build
-ENV NODE_ENV production
+FROM node:19-alpine AS build
+ENV NODE_ENV=production
 
 
 WORKDIR /app
@@ -12,8 +12,8 @@ COPY . .
 
 RUN npm run build
 
-FROM nginx:1.21.0-alpine as prod
-ENV NODE_ENV production
+FROM nginx:1.21.0-alpine AS prod
+ENV NODE_ENV=production
 
 COPY ngnix.conf /etc/nginx/conf.d/default.conf
 
