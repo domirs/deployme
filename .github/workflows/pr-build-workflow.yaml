@@ -11,8 +11,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v4
+
       - name: 'Login into openshift'
         uses: ./.github/actions/oc-login
+        with:
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
-      - name: 'test login'
-        run: oc project
+      - name: 'list projects'
+        run: oc projects
