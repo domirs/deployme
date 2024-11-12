@@ -78,4 +78,4 @@ jobs:
 
       - name: deploy pr
         working-directory: deploy/deployme
-        run: helm upgrade --install main ./
+        run: helm upgrade --install ${{ needs.set-vars.outputs.ENV_NAME }} ./
