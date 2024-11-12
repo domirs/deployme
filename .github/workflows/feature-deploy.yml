@@ -20,26 +20,29 @@ jobs:
       - name: echo
         run: echo ${{ steps.genEnvName.outputs.ENV_NAME }}
 
-  # build:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v4
+  build:
+    needs: [set-vars]
+    runs-on: ubuntu-latest
+    env:
+      ENV_NAME: ${{ needs.set-vars.outputs.ENV_NAME }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-  #     - name: Set up Node.js
-  #       uses: actions/setup-node@v4
-  #       with:
-  #         node-version: ${{ env.NODE_VERSION }}
-  #         cache: "npm"
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
 
-  #     - name: npm install
-  #       run: npm ci
+      - name: npm install
+        run: npm ci
 
-  #     - name: npm build
-  #       run: npm run build
+      - name: npm build
+        run: npm run build
 
-  #     - name: docker build
-  #       run: docker build . --file Dockerfile --tag deployme:${{ env.ENV_NAME }}
+      - name: docker build
+        run: docker build . --file Dockerfile --tag deployme:${ ENV_NAME }
 
   # deployment:
   #   environment:
