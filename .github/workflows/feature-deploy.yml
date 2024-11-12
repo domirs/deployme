@@ -17,8 +17,6 @@ jobs:
       - id: genEnvName
         name: set env
         run: echo "ENV_NAME=${GITHUB_REF#refs/branch/}" | tr / - >> $GITHUB_OUTPUT
-      - name: echo
-        run: echo ${{ steps.genEnvName.outputs.ENV_NAME }}
 
   build:
     needs: [set-vars]
