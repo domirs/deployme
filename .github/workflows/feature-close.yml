@@ -1,0 +1,19 @@
+name: feature build & deploy
+
+on:
+  pull_request:
+    types: [closed]
+
+concurrency:
+  group: "feature-close"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    environment:
+      name: main
+      url: https://main-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4

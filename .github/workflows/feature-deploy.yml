@@ -1,0 +1,31 @@
+name: feature build & deploy
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+concurrency:
+  group: "feature-deploy"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    environment:
+      name: ${{ github.ref }}
+      url: https://${{ github.ref }}-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "npm"
+
+      - name: npm install
+        run: npm ci
+
+      - name: npm build
+        run: npm run build
