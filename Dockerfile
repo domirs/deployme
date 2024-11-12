@@ -1,19 +1,8 @@
-FROM nginx:1.21.0-alpine 
+FROM registry.access.redhat.com/ubi8/nginx-126
 
-COPY ngnix.conf /etc/nginx/conf.d/default.conf
+# Add application sources
+ADD nginx.conf "${NGINX_CONF_PATH}"
+ADD dist/* .
 
-COPY dist /usr/share/nginx/html
-
-RUN chown -R 1001:0 /usr/share/nginx/html && chmod -R 755 /usr/share/nginx/html && \
-  chown -R 1001:0 /var/cache/nginx && \
-  chown -R 1001:0 /var/log/nginx && \
-  chown -R 1001:0 /etc/nginx/conf.d
-
-RUN touch /var/run/nginx.pid && \
-  chown -R 1001:0 /var/run/nginx.pid
-
-USER 1001
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Run script uses standard ways to run the application
+CMD nginx -g "daemon off;"
