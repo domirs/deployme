@@ -10,9 +10,6 @@ concurrency:
 
 jobs:
   build:
-    environment:
-      name: main
-      url: https://main-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -32,6 +29,3 @@ jobs:
 
       - name: docker build
         run: docker build . --file Dockerfile --tag deployme:main
-
-      - name: Login into openshift
-        uses: ./.github/actions/oc-login
