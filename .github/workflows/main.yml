@@ -49,13 +49,15 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
+      - name: test
+        run: echo "${{ steps.meta.outputs.tags }}"
+
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          # tags: ${{ steps.meta.outputs.tags }}
-          tags: test
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
   # deployment:
