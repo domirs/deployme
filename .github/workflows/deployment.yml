@@ -82,7 +82,7 @@ jobs:
 
       - name: deploy pr
         working-directory: deploy/deployme
-        run: helm upgrade --install --set-string image.tag=${{ needs.set-vars.outputs.ENV_NAME }} ${{ needs.set-vars.outputs.ENV_NAME }} ./
+        run: helm upgrade --install --atomic --timeout 300s --set-string image.tag=${{ needs.set-vars.outputs.ENV_NAME }} ${{ needs.set-vars.outputs.ENV_NAME }} ./
 
   cleanup:
     needs: [set-vars]
