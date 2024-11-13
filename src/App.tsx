@@ -143,7 +143,7 @@ function App() {
   return (
     <>
       <section className="flex flex-col items-center justify-center min-h-screen px-3">
-        <LanguageSelect />
+        {/* <LanguageSelect /> */}
         <div className="mt-3 bg-slate-400/50 rounded shadow-lg border border-white/30 p-5 w-full md:w-[350px]">
           <div>
             <form className="relative" onSubmit={handleSubmit}>
