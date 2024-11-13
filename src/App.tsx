@@ -4,7 +4,6 @@ import { BiSearch } from "react-icons/bi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaDroplet, FaWind } from "react-icons/fa6";
 import "./App.css";
-import LanguageSelect from "./components/LanguageSelect";
 import RippleLoader from "./components/Loader";
 
 // Defining types for weather data
