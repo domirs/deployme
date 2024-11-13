@@ -1,5 +1,5 @@
 import { T, useTranslate } from "@tolgee/react"; // Importing translation functions from Tolgee
-import { useState } from "react";
+import { FormEventHandler, useEffect, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaDroplet, FaWind } from "react-icons/fa6";
@@ -46,7 +46,7 @@ interface ChuckNorrisData {
 
 function App() {
   // State variables to store city name, weather data, forecast data, loading state, and errors
-  const [city, setCity] = useState<string>(""); // City input value
+  const [city, setCity] = useState<string>(); // City input value
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null); // Current weather data
   const [, setForecastData] = useState<ForecastData | null>(null); // Forecast data
   const [loading, setLoading] = useState<boolean>(false); // Loading state
@@ -54,6 +54,16 @@ function App() {
   const [chuckNorris, setChuckNorris] = useState<ChuckNorrisData | null>(null) // Chuck Norris joke
 
   const { t } = useTranslate(); // Tolgee translation hook
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => { 
+    if (city) {
+      fetchWeatherData(city); // Fetch weather data when city value changes
+      fetchChuckNorris();
+    }
+  }, [city]);
+
 
   // Function to fetch weather and forecast data from OpenWeather API
   const fetchWeatherData = async (cityName: string) => {
@@ -94,11 +104,9 @@ function App() {
   };
 
   // Handling form submission to fetch weather data based on city input
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    fetchWeatherData(city);
-    fetchChuckNorris();
-    setCity("");
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    setCity(inputRef.current?.value);
   };
 
   const fetchChuckNorris = async () => {
@@ -124,8 +132,6 @@ function App() {
 
   const handleLocaleWeather = () => {
     setCity("Winterthur");
-    fetchWeatherData(city);
-    fetchChuckNorris();
   }
 
   return (
@@ -136,12 +142,11 @@ function App() {
           <div>
             <form className="flex gap-3" onSubmit={handleSubmit}>
               <input
+                ref={inputRef}
                 type="text"
                 name="search"
                 placeholder={t("search_city", "Search City")} // Translation for placeholder text
                 className="w-full px-4 py-2 border rounded-full text-white/70 bg-[#668ba0] focus:outline-none border-transparent focus:border-[#668ba0]"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
               />
               <button type="submit" className="">
                 <BiSearch className="text-white/70" size={20} />
