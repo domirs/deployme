@@ -1,8 +1,8 @@
-name: feature build & deploy
+name: feature build & deploy & cleanup
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
+    types: [opened, reopened, synchronize, closed]
 
 concurrency:
   group: "feature-${{ github.event.pull_request.head.ref }}"
@@ -25,6 +25,7 @@ jobs:
   build:
     needs: [set-vars]
     runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
     permissions:
       contents: read
       packages: write
@@ -63,6 +64,7 @@ jobs:
   deployment:
     needs: [set-vars, build]
     runs-on: ubuntu-latest
+    if: github.event.action != 'closed'
     environment:
       name: ${{ needs.set-vars.outputs.ENV_NAME }}
       url: https://${{ needs.set-vars.outputs.ENV_NAME }}-deployme-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
@@ -79,3 +81,24 @@ jobs:
       - name: deploy pr
         working-directory: deploy/deployme
         run: helm upgrade --install --set-string image.tag=${{ needs.set-vars.outputs.ENV_NAME }} ${{ needs.set-vars.outputs.ENV_NAME }} ./
+
+  cleanup:
+    needs: [set-vars]
+    runs-on: ubuntu-latest
+    if: github.event.action == 'closed'
+    environment:
+      name: ${{ needs.set-vars.outputs.ENV_NAME }}
+      url: https://${{ needs.set-vars.outputs.ENV_NAME }}-deployme-domigmail-dev.apps.sandbox-m2.ll9k.p1.openshiftapps.com
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login into openshift
+        uses: ./.github/actions/oc-login
+        with:
+          namespace: ${{ env.OPENSHIFT_NAMESPACE }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+
+      - name: uninstall pr
+        working-directory: deploy/deployme
+        run: helm uninstall ${{ needs.set-vars.outputs.ENV_NAME }}
