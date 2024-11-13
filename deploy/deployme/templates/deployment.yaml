@@ -22,7 +22,7 @@ spec:
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-        timestamp: {{ now | quote }} # enforce deployment
+        timestamp: {{ now | sha256sum | quote }} # enforce deployment
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
