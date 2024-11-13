@@ -146,7 +146,10 @@ function App() {
               <button type="submit" className="">
                 <BiSearch className="text-white/70" size={20} />
               </button>
-              <button type="button" onClick={handleLocaleWeather} className="">
+              <button
+                type="button"
+                onClick={handleLocaleWeather}
+                className="bounce">
                 Lokales Wetter
               </button>
             </form>
@@ -169,13 +172,15 @@ function App() {
               <div className="flex justify-between items-center text-white font-bold">
                 <span className="flex-col items-center gap-x-2">
                   <span className="flex items-center gap-x-2">
-                  <FaMapMarkerAlt size={20} />
+                    <FaMapMarkerAlt size={20} />
                     <p className="text-xl font-serif">{weatherData.name}</p>
                   </span>
                   <span className="flex items-center gap-x-2">
-                  <CiGlobe size={20} />
-                    <p className="text-xl font-serif">{weatherData.sys.country}</p>
-                    </span>
+                    <CiGlobe size={20} />
+                    <p className="text-xl font-serif">
+                      {weatherData.sys.country}
+                    </p>
+                  </span>
                 </span>
 
                 <div className="flex flex-col items-center">
@@ -220,11 +225,15 @@ function App() {
                 </div>
               </div>
               <div className="flex justify-center items-center">
-                <img src={chuckNorris?.icon_url} alt="Chuck Norris" className="mr-3" />
+                <img
+                  src={chuckNorris?.icon_url}
+                  alt="Chuck Norris"
+                  className="mr-3"
+                />
                 <p className="text-lg font-serif text-white/90">
                   {chuckNorris?.value}
                 </p>
-                </div>
+              </div>
             </div>
           )}
         </div>
