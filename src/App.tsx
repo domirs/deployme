@@ -1,8 +1,9 @@
 import { T, useTranslate } from "@tolgee/react"; // Importing translation functions from Tolgee
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { BiSearch } from "react-icons/bi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaDroplet, FaWind } from "react-icons/fa6";
+import { CiGlobe } from "react-icons/ci";
 import "./App.css";
 import RippleLoader from "./components/Loader";
 
@@ -62,6 +63,7 @@ function App() {
       }
       const weatherData: WeatherData = await weatherResponse.json(); // Parsing weather data
       setWeatherData(weatherData); // Setting the fetched weather data
+      console.log(weatherData);
 
       // Fetching forecast data
       const forecastResponse = await fetch(forecastUrl);
@@ -89,55 +91,54 @@ function App() {
     setCity("");
   };
 
-  // useEffect to fetch the user's location and display the weather for the current location
-  useEffect(() => {
-    const getUserLocation = async () => {
-      if (navigator.geolocation) {
-        // Checking if geolocation is available
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            const { latitude, longitude } = position.coords; // Getting user's device location
-            const apiKey = "6aa1b1b98ae89bb4e3b5dfdbfd2ca861";
-            const reverseGeocodeUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`; // API URL for reverse geocoding (get location by lat/lon
+  const handleLocaleWeather = () => {
+      const getUserLocation = async () => {
+        if (navigator.geolocation) {
+          // Checking if geolocation is available
+          navigator.geolocation.getCurrentPosition(
+            async (position) => {
+              const { latitude, longitude } = position.coords; // Getting user's device location
+              const apiKey = "6aa1b1b98ae89bb4e3b5dfdbfd2ca861";
+              const reverseGeocodeUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`; // API URL for reverse geocoding (get location by lat/lon
 
-            try {
-              setLoading(true);
-              const response = await fetch(reverseGeocodeUrl); // Fetching weather data by geolocation
-              if (!response.ok) {
-                throw new Error("Unable to fetch location data"); // Error if location data fetch fails
+              try {
+                setLoading(true);
+                const response = await fetch(reverseGeocodeUrl); // Fetching weather data by geolocation
+                if (!response.ok) {
+                  throw new Error("Unable to fetch location data"); // Error if location data fetch fails
+                }
+                const data: WeatherData = await response.json(); // Parsing weather data
+                setWeatherData(data); // Setting the fetched weather data
+                setCity(data.name); // Setting the city based on fetched location
+                await fetchWeatherData(data.name); // Fetching weather data for the fetched city
+              } catch (error) {
+                // Handling any errors that occur during the fetch
+                if (error instanceof Error) {
+                  setError(error.message); // Displaying error message
+                }
+                setWeatherData(null); // Resetting weather data
+                setForecastData(null); // Resetting forecast data
+              } finally {
+                setLoading(false); // Resetting loading state
               }
-              const data: WeatherData = await response.json(); // Parsing weather data
-              setWeatherData(data); // Setting the fetched weather data
-              setCity(data.name); // Setting the city based on fetched location
-              await fetchWeatherData(data.name); // Fetching weather data for the fetched city
-            } catch (error) {
-              // Handling any errors that occur during the fetch
-              if (error instanceof Error) {
-                setError(error.message); // Displaying error message
-              }
-              setWeatherData(null); // Resetting weather data
-              setForecastData(null); // Resetting forecast data
-            } finally {
-              setLoading(false); // Resetting loading state
+            },
+            () => {
+              // Handling geolocation errors (e.g., if user denies location access)
+              setError("Unable to retrieve your location");
+              setWeatherData(null);
+              setForecastData(null);
             }
-          },
-          () => {
-            // Handling geolocation errors (e.g., if user denies location access)
-            setError("Unable to retrieve your location");
-            setWeatherData(null);
-            setForecastData(null);
-          }
-        );
-      } else {
-        // Handling case where geolocation is not supported by the browser
-        setError("Geolocation is not supported by this browser.");
-        setWeatherData(null);
-        setForecastData(null);
-      }
-    };
+          );
+        } else {
+          // Handling case where geolocation is not supported by the browser
+          setError("Geolocation is not supported by this browser.");
+          setWeatherData(null);
+          setForecastData(null);
+        }
+      };
 
-    getUserLocation(); // Invoking the function to get user location on page load
-  }, []); // Empty dependency array to run effect once on component mount
+      getUserLocation(); // Invoking the function to get user location on page load
+  }
 
   return (
     <>
@@ -157,6 +158,9 @@ function App() {
               <button type="submit" className="">
                 <BiSearch className="text-white/70" size={20} />
               </button>
+              <button type="button" onClick={handleLocaleWeather} className="">
+                Lokales Wetter
+              </button>
             </form>
           </div>
 
@@ -175,9 +179,15 @@ function App() {
             <div>
               {/* Displaying current weather data */}
               <div className="flex justify-between items-center text-white font-bold">
-                <span className="flex items-center gap-x-2">
+                <span className="flex-col items-center gap-x-2">
+                  <span className="flex items-center gap-x-2">
                   <FaMapMarkerAlt size={20} />
-                  <p className="text-xl font-serif">{weatherData.name}</p>
+                    <p className="text-xl font-serif">{weatherData.name}</p>
+                  </span>
+                  <span className="flex items-center gap-x-2">
+                  <CiGlobe size={20} />
+                    <p className="text-xl font-serif">{weatherData.sys.country}</p>
+                    </span>
                 </span>
 
                 <div className="flex flex-col items-center">
@@ -200,7 +210,7 @@ function App() {
                   <FaDroplet size={30} className="text-white/90" />
                   <span>
                     <p className="text-lg font-serif text-white font-bold">
-                      <T keyName="humidity">Humidity</T>
+                      <T keyName="humidity">Luftfeuchtigkeit</T>
                     </p>
                     <p className="text-lg font-medium text-white/90">
                       {weatherData.main.humidity}%
@@ -213,7 +223,7 @@ function App() {
                   <FaWind size={30} className="text-white/90" />
                   <span>
                     <p className="text-lg font-serif text-white font-bold">
-                      <T keyName="wind_speed">Wind Speed</T>
+                      <T keyName="wind_speed">Wind Geschwindigkeit</T>
                     </p>
                     <p className="text-lg font-medium text-white/90">
                       {weatherData.wind.speed} km/h
