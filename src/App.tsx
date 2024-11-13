@@ -4,7 +4,6 @@ import { BiSearch } from "react-icons/bi";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaDroplet, FaWind } from "react-icons/fa6";
 import "./App.css";
-import LanguageSelect from "./components/LanguageSelect";
 import RippleLoader from "./components/Loader";
 
 // Defining types for weather data
@@ -143,7 +142,7 @@ function App() {
   return (
     <>
       <section className="flex flex-col items-center justify-center min-h-screen px-3">
-        <LanguageSelect />
+        {/* <LanguageSelect /> */}
         <div className="mt-3 bg-slate-400/50 rounded shadow-lg border border-white/30 p-5 w-full md:w-[350px]">
           <div>
             <form className="flex gap-3" onSubmit={handleSubmit}>
