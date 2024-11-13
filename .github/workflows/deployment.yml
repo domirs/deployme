@@ -1,4 +1,4 @@
-name: feature build & deploy & cleanup
+name: build, deploy & cleanup
 
 on:
   push:
@@ -20,13 +20,9 @@ jobs:
     outputs:
       ENV_NAME: ${{ steps.genEnvName.outputs.ENV_NAME }}
     steps:
-      - name: Print GitHub context
-        run: |
-          echo "GitHub context:"
-          echo "${{ toJson(github) }}"
       - id: genEnvName
         name: set env
-        run: echo "ENV_NAME=${{ github.event.pull_request.head.ref || 'main' }}" | tr / - | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
+        run: echo "ENV_NAME=${{ github.event.pull_request.head.ref || github.ref_name }}" | tr / - | tr '[:upper:]' '[:lower:]' >> $GITHUB_OUTPUT
 
   build:
     needs: [set-vars]
