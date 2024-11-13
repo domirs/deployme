@@ -21,6 +21,9 @@ interface WeatherData {
   wind: {
     speed: number;
   };
+  sys: {
+    country: string;
+  };
 }
 
 // Defining types for forecast data
@@ -36,13 +39,19 @@ interface ForecastData {
   }[];
 }
 
+interface ChuckNorrisData {
+  icon_url: string;
+  value: string;
+}
+
 function App() {
   // State variables to store city name, weather data, forecast data, loading state, and errors
   const [city, setCity] = useState<string>(""); // City input value
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null); // Current weather data
   const [, setForecastData] = useState<ForecastData | null>(null); // Forecast data
   const [loading, setLoading] = useState<boolean>(false); // Loading state
-  const [error, setError] = useState<string | null>(null); // Error message
+  const [error, setError] = useState<string | null>(null) // Error message
+  const [chuckNorris, setChuckNorris] = useState<ChuckNorrisData | null>(null) // Chuck Norris joke
 
   const { t } = useTranslate(); // Tolgee translation hook
 
@@ -88,8 +97,30 @@ function App() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     fetchWeatherData(city);
+    fetchChuckNorris();
     setCity("");
   };
+
+  const fetchChuckNorris = async () => {
+    const url = "https://api.chucknorris.io/jokes/random";
+    try {
+      setLoading(true);
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Unable to fetch Chuck Norris joke");
+      }
+      const chuckNorrisData = await response.json();
+      setChuckNorris(chuckNorrisData);
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      }
+      setChuckNorris(null);
+    } finally {
+      setLoading(false);
+    }
+  }
+
 
   const handleLocaleWeather = () => {
       const getUserLocation = async () => {
@@ -111,6 +142,7 @@ function App() {
                 setWeatherData(data); // Setting the fetched weather data
                 setCity(data.name); // Setting the city based on fetched location
                 await fetchWeatherData(data.name); // Fetching weather data for the fetched city
+                await fetchChuckNorris();
               } catch (error) {
                 // Handling any errors that occur during the fetch
                 if (error instanceof Error) {
@@ -231,6 +263,12 @@ function App() {
                   </span>
                 </div>
               </div>
+              <div className="flex justify-center items-center">
+                <img src={chuckNorris?.icon_url} alt="Chuck Norris" className="mr-3" />
+                <p className="text-lg font-serif text-white/90">
+                  {chuckNorris?.value}
+                </p>
+                </div>
             </div>
           )}
         </div>
