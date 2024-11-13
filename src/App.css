@@ -6,7 +6,7 @@
 }
 
 body {
-  background-color: #98c7da; /* Replace with your desired background color */
+  background-color: #aa0000; /* Replace with your desired background color */
   background-image: url("./assets/mountain-view.jpg"); /* Replace with the file path to your background image */
   background-repeat: no-repeat;
   background-position: center;
@@ -31,7 +31,11 @@ body::before {
 }
 
 @keyframes bounce {
-  0%, 20%, 50%, 80%, 100% {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateY(0);
   }
   40% {
