@@ -72,7 +72,7 @@ function App() {
       }
       const weatherData: WeatherData = await weatherResponse.json(); // Parsing weather data
       setWeatherData(weatherData); // Setting the fetched weather data
-      console.log(weatherData);
+      
 
       // Fetching forecast data
       const forecastResponse = await fetch(forecastUrl);
