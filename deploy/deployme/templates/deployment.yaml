@@ -13,11 +13,8 @@ spec:
       {{- include "deployme.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        timestamp: {{ now | sha256sum | toString| squote }} # enforce deployment
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        timestamp: {{ now | toString | sha256sum | squote }} # enforce deployment
       labels:
         {{- include "deployme.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
