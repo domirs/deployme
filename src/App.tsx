@@ -146,7 +146,7 @@ function App() {
         <LanguageSelect />
         <div className="mt-3 bg-slate-400/50 rounded shadow-lg border border-white/30 p-5 w-full md:w-[350px]">
           <div>
-            <form className="relative" onSubmit={handleSubmit}>
+            <form className="flex gap-3" onSubmit={handleSubmit}>
               <input
                 type="text"
                 name="search"
@@ -155,7 +155,7 @@ function App() {
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
-              <button type="submit" className="absolute top-3 right-3">
+              <button type="submit" className="">
                 <BiSearch className="text-white/70" size={20} />
               </button>
             </form>
