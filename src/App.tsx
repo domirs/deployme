@@ -123,60 +123,16 @@ function App() {
 
 
   const handleLocaleWeather = () => {
-      const getUserLocation = async () => {
-        if (navigator.geolocation) {
-          // Checking if geolocation is available
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              const { latitude, longitude } = position.coords; // Getting user's device location
-              const apiKey = "6aa1b1b98ae89bb4e3b5dfdbfd2ca861";
-              const reverseGeocodeUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}&units=metric`; // API URL for reverse geocoding (get location by lat/lon
-
-              try {
-                setLoading(true);
-                const response = await fetch(reverseGeocodeUrl); // Fetching weather data by geolocation
-                if (!response.ok) {
-                  throw new Error("Unable to fetch location data"); // Error if location data fetch fails
-                }
-                const data: WeatherData = await response.json(); // Parsing weather data
-                setWeatherData(data); // Setting the fetched weather data
-                setCity(data.name); // Setting the city based on fetched location
-                await fetchWeatherData(data.name); // Fetching weather data for the fetched city
-                await fetchChuckNorris();
-              } catch (error) {
-                // Handling any errors that occur during the fetch
-                if (error instanceof Error) {
-                  setError(error.message); // Displaying error message
-                }
-                setWeatherData(null); // Resetting weather data
-                setForecastData(null); // Resetting forecast data
-              } finally {
-                setLoading(false); // Resetting loading state
-              }
-            },
-            () => {
-              // Handling geolocation errors (e.g., if user denies location access)
-              setError("Unable to retrieve your location");
-              setWeatherData(null);
-              setForecastData(null);
-            }
-          );
-        } else {
-          // Handling case where geolocation is not supported by the browser
-          setError("Geolocation is not supported by this browser.");
-          setWeatherData(null);
-          setForecastData(null);
-        }
-      };
-
-      getUserLocation(); // Invoking the function to get user location on page load
+    setCity("Winterthur");
+    fetchWeatherData(city);
+    fetchChuckNorris();
   }
 
   return (
     <>
       <section className="flex flex-col items-center justify-center min-h-screen px-3">
         {/* <LanguageSelect /> */}
-        <div className="mt-3 bg-slate-400/50 rounded shadow-lg border border-white/30 p-5 w-full md:w-[350px]">
+        <div className="mt-3 bg-slate-400/50 rounded shadow-lg border border-white/30 p-5 w-full md:w-[550px]">
           <div>
             <form className="flex gap-3" onSubmit={handleSubmit}>
               <input
