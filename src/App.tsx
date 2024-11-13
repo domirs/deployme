@@ -1,9 +1,9 @@
 import { T, useTranslate } from "@tolgee/react"; // Importing translation functions from Tolgee
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import { BiSearch } from "react-icons/bi";
+import { CiGlobe } from "react-icons/ci";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { FaDroplet, FaWind } from "react-icons/fa6";
-import { CiGlobe } from "react-icons/ci";
 import "./App.css";
 import RippleLoader from "./components/Loader";
 
@@ -50,20 +50,19 @@ function App() {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null); // Current weather data
   const [, setForecastData] = useState<ForecastData | null>(null); // Forecast data
   const [loading, setLoading] = useState<boolean>(false); // Loading state
-  const [error, setError] = useState<string | null>(null) // Error message
-  const [chuckNorris, setChuckNorris] = useState<ChuckNorrisData | null>(null) // Chuck Norris joke
-
-  const { t } = useTranslate(); // Tolgee translation hook
+  const [error, setError] = useState<string | null>(null); // Error message
+  const [chuckNorris, setChuckNorris] = useState<ChuckNorrisData | null>(null); // Chuck Norris joke
 
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => { 
+  const { t } = useTranslate(); // Tolgee translation hook
+
+  useEffect(() => {
     if (city) {
       fetchWeatherData(city); // Fetch weather data when city value changes
       fetchChuckNorris();
     }
   }, [city]);
-
 
   // Function to fetch weather and forecast data from OpenWeather API
   const fetchWeatherData = async (cityName: string) => {
@@ -82,7 +81,6 @@ function App() {
       }
       const weatherData: WeatherData = await weatherResponse.json(); // Parsing weather data
       setWeatherData(weatherData); // Setting the fetched weather data
-      
 
       // Fetching forecast data
       const forecastResponse = await fetch(forecastUrl);
@@ -103,12 +101,6 @@ function App() {
     }
   };
 
-  // Handling form submission to fetch weather data based on city input
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-    setCity(inputRef.current?.value);
-  };
-
   const fetchChuckNorris = async () => {
     const url = "https://api.chucknorris.io/jokes/random";
     try {
@@ -127,12 +119,17 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
+  // Handling form submission to fetch weather data based on city input
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    setCity(inputRef.current?.value);
+  };
 
   const handleLocaleWeather = () => {
     setCity("Winterthur");
-  }
+  };
 
   return (
     <>
@@ -174,13 +171,15 @@ function App() {
               <div className="flex justify-between items-center text-white font-bold">
                 <span className="flex-col items-center gap-x-2">
                   <span className="flex items-center gap-x-2">
-                  <FaMapMarkerAlt size={20} />
+                    <FaMapMarkerAlt size={20} />
                     <p className="text-xl font-serif">{weatherData.name}</p>
                   </span>
                   <span className="flex items-center gap-x-2">
-                  <CiGlobe size={20} />
-                    <p className="text-xl font-serif">{weatherData.sys.country}</p>
-                    </span>
+                    <CiGlobe size={20} />
+                    <p className="text-xl font-serif">
+                      {weatherData.sys.country}
+                    </p>
+                  </span>
                 </span>
 
                 <div className="flex flex-col items-center">
@@ -225,11 +224,15 @@ function App() {
                 </div>
               </div>
               <div className="flex justify-center items-center">
-                <img src={chuckNorris?.icon_url} alt="Chuck Norris" className="mr-3" />
+                <img
+                  src={chuckNorris?.icon_url}
+                  alt="Chuck Norris"
+                  className="mr-3"
+                />
                 <p className="text-lg font-serif text-white/90">
                   {chuckNorris?.value}
                 </p>
-                </div>
+              </div>
             </div>
           )}
         </div>
